@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import './App.css';
 import { db } from "./firebase-config";
-import { collection, getDocs, addDoc, updateDoc, doc } from "firebase/firestore";
+import { collection, getDocs, addDoc, updateDoc, deleteDoc, doc } from "firebase/firestore";
 
 function App() {
   const [newName, setNewName] = useState("")
@@ -18,6 +18,11 @@ function App() {
     const newFields = { age: age + 1 }
     await updateDoc(userDoc, newFields)
   };
+
+  const deleteUser = async (id) => {
+    const userDoc = doc(db, "users", id);
+    await deleteDoc(userDoc);
+  }
 
   useEffect(() => {
     const getUsers = async () => {
