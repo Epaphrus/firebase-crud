@@ -10,7 +10,7 @@ function App() {
   const usersCollectionRef = collection(db, "users");
 
   const createUser = async () => {
-    await addDoc(usersCollectionRef, { name: newName, age: newAge })
+    await addDoc(usersCollectionRef, { name: newName, age: Number(newAge) })
   }
 
   const updateUser = async (id, age) => {
