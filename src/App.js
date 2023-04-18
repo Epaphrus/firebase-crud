@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import './App.css';
 import { db } from "./firebase-config";
-import { collection, getDocs, addDoc } from "firebase/firestore";
+import { collection, getDocs, addDoc, updateDoc, doc } from "firebase/firestore";
 
 function App() {
   const [newName, setNewName] = useState("")
@@ -13,9 +13,11 @@ function App() {
     await addDoc(usersCollectionRef, { name: newName, age: newAge })
   }
 
-  const updateUser = async () => {
-
-  }
+  const updateUser = async (id, age) => {
+    const userDoc = doc(db, "users", id)
+    const newFields = { age: age + 1 }
+    await updateDoc(userDoc, newFields)
+  };
 
   useEffect(() => {
     const getUsers = async () => {
@@ -38,11 +40,13 @@ function App() {
             {""}
             <h1>Name: {user.name}</h1>
             <h1>Age: {user.age}</h1>
-            <button>Increase Age</button>
+            <button onClick={() => {
+              updateUser(user.id, user.age);
+            }}>Increase Age</button>
           </div>
         )
       })}
-    </div>
+    </div >
   );
 }
 
